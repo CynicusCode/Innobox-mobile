@@ -1,48 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
-import AppLoading from "expo-app-loading"; // Or SplashScreen in newer versions
-import * as Font from "expo-font";
 
-export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-
-  async function loadFonts() {
-    await Font.loadAsync({
-      "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
-      // Load other font styles as needed
-    });
-    setFontsLoaded(true);
-  }
-
-  useEffect(() => {
-    loadFonts();
-  }, []);
-
-  if (!fontsLoaded) {
-    // Render a loading screen or null while fonts are loading
-    return <AppLoading />;
-  }
-
-  return (
-    <View style={styles.container}>
-      {/* Flex value 2 rows */}
-      <View style={styles.imageContainer}>
-        <Image
-          source={require("./assets/images/robot.png")}
-          style={styles.image}
-        />
-      </View>
-
-      {/* Title and Marketing Tag 1 flex row */}
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Innobox Co-Pilot</Text>
-        <Text style={styles.tagLine}>Professional Email Responses,</Text>
-        <Text style={styles.tagLine}>Anytime, Anywhere</Text>
-      </View>
-
-      {/* The rest of your components here with their respective styles */}
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
