@@ -1,68 +1,103 @@
-import React, { useCallback } from "react";
-import { View, StyleSheet, Image } from "react-native";
-import useCustomFonts from "./hooks/useCustomFonts"; // Make sure this path is correct
-import * as SplashScreen from "expo-splash-screen";
-import { globalStyles } from "./styles/globalStyles"; // Make sure this path is correct
-import GradientText from "./src/components/GradientText"; // Make sure this path is correct
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  TextInput,
+  Image,
+} from "react-native";
+import { Icon } from "react-native-elements";
+import { globalStyles } from "../../styles/globalStyles";
 
-// Prevent the splash screen from hiding until fonts are loaded
-SplashScreen.preventAutoHideAsync();
-
-export default function App() {
-  const fontsLoaded = useCustomFonts();
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null; // Or a custom loading component if you prefer
-  }
+const SettingsScreen = () => {
+  const [description, setDescription] = useState("");
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={require("./assets/images/robot.png")} // Make sure this path is correct
-          style={styles.image}
+    <SafeAreaView style={styles.container}>
+      {/* Header containing Hamburger Menu Icon and Title */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.menuButton}>
+          <Icon name="menu" type="material" color="#7CFFE7" />
+        </TouchableOpacity>
+        <Text style={[globalStyles.header, styles.title]}>Settings</Text>
+      </View>
+
+      {/* Gradient Title */}
+      <View style={styles.titleContainer}>
+        <Text style={globalStyles.subTitle}>Describe Yourself</Text>
+      </View>
+
+      {/* Description Input */}
+      <View style={styles.card}>
+        <TextInput
+          style={styles.input}
+          multiline
+          value={description}
+          onChangeText={setDescription}
+          placeholder="Enter a brief description..."
         />
       </View>
 
-      <View style={styles.titleContainer}>
-        <GradientText style={[globalStyles.title]}>
-          Innobox Co-Pilot
-        </GradientText>
-        {/* Other text elements if you want them to have the same style can be added here */}
+      {/* Subtitle for Personality Modifiers */}
+      <View style={styles.subtitleContainer}>
+        <Text style={globalStyles.subTitle}>Personality Modifiers</Text>
       </View>
 
-      {/* You can add more components here with their respective styles */}
-    </View>
+      {/* Card for Personality Modifiers */}
+      <View style={styles.card}>
+        {/* Add components for personality modifiers here */}
+      </View>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0C0115",
-    padding: 10,
+    paddingTop: 40,
   },
-  imageContainer: {
-    flex: 2,
-    justifyContent: "center",
+  header: {
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
-  image: {
-    width: "100%",
-    height: undefined,
-    aspectRatio: 1,
-    resizeMode: "contain",
+  menuButton: {
+    marginLeft: 10,
+  },
+  title: {
+    textAlign: "center",
+    flexGrow: 1,
   },
   titleContainer: {
-    flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    marginTop: 20,
   },
-  // Add styles for your other components as needed
+  card: {
+    flex: 0.4,
+    width: "90%",
+    alignSelf: "center",
+    borderRadius: 10,
+    padding: 15,
+    marginTop: 30,
+    marginBottom: 5,
+    backgroundColor: "#fff", // Add a background color to the card
+  },
+  input: {
+    height: 100, // Adjust as needed
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: "#fff",
+  },
+  subtitleContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
+  // Add more styles as needed
 });
+
+export default SettingsScreen;
