@@ -32,7 +32,7 @@ const ContextRoute = () => {
 
       <View style={styles.buttonContainer}>
         <GradientButton
-          title="Get Context"
+          title="Context"
           onPress={() => {
             /* Handle get context action */
           }}
@@ -46,7 +46,7 @@ const ContextRoute = () => {
           iconSource={edit}
         />
         <GradientButton
-          title="Generate AI"
+          title="Ai Answer"
           colors={["#15CDB7", "#387E75"]}
           onPress={() => {
             /* Handle generate AI response action */

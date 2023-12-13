@@ -1,16 +1,28 @@
-//GradientButton.js
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet, Image } from "react-native";
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { globalStyles } from "../../styles/globalStyles";
-import AiIcon from "../../assets/images/eos-icons_ai.png";
+
+const windowWidth = Dimensions.get("window").width;
 
 const GradientButton = ({ onPress, title, iconSource, colors }) => {
   // Default colors if none are provided
   const defaultColors = ["#1F83AD", "#38089F"];
+
+  // Adjust styles based on screen width
+  const dynamicButtonStyle = {
+    ...styles.gradientButton,
+    width: windowWidth > 360 ? 120 : 100, // smaller width for smaller screens
+  };
+
   return (
     <LinearGradient
-      style={styles.gradientButton}
+      style={dynamicButtonStyle}
       colors={colors || defaultColors}
       start={{ x: 0.5, y: 0 }}
       end={{ x: 1, y: 0.5 }}
@@ -32,7 +44,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 50,
-    width: 120,
   },
   buttonText: {
     color: "white",

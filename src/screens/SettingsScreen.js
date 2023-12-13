@@ -14,7 +14,7 @@ import { globalStyles } from "../../styles/globalStyles";
 import toneOptions from "../data/toneOptions";
 import GradientText from "../components/GradientText";
 import { LinearGradient } from "expo-linear-gradient";
-import GradientButton from "../components/GradientButton"; // Import GradientButton
+import GradientButton from "../components/GradientButton";
 
 const SettingsScreen = () => {
   const defaultTone = toneOptions.find((tone) => tone.title === "Professional");
@@ -25,23 +25,29 @@ const SettingsScreen = () => {
     setSelectedTone(tone);
   };
 
-  const renderToneItem = ({ item }) => (
-    <GradientButton
-      onPress={() => handleSelectTone(item)}
-      title={item.title}
-      colors={["#1F83AD", "#38089F"]}
-    />
-  );
+  const renderToneItem = ({ item }) => {
+    // Determine if this tone is selected
+    const isSelected = selectedTone.id === item.id;
+
+    // Set gradient colors based on selection
+    const gradientColors = isSelected
+      ? ["#4CAF50", "#81C784"]
+      : ["#1F83AD", "#38089F"];
+
+    return (
+      <LinearGradient colors={gradientColors} style={styles.gradientButton}>
+        <TouchableOpacity
+          style={styles.toneButton}
+          onPress={() => handleSelectTone(item)}
+        >
+          <Text style={styles.toneButtonText}>{item.title}</Text>
+        </TouchableOpacity>
+      </LinearGradient>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.menuButton}>
-          <Icon name="menu" type="material" color="#7CFFE7" />
-        </TouchableOpacity>
-        <Text style={[globalStyles.header, styles.title]}>Settings</Text>
-      </View>
-
       {/* Title Container */}
       <View style={styles.titleContainer}>
         <GradientText style={globalStyles.subtitle}>
@@ -51,7 +57,7 @@ const SettingsScreen = () => {
 
       <LinearGradient
         style={styles.card}
-        colors={["#0E0749", "#0C0922"]}
+        colors={["#0C0922", "#2F2770"]}
         start={{ x: 1, y: 5 }}
         end={{ x: 10, y: 5 }}
       >
@@ -67,21 +73,47 @@ const SettingsScreen = () => {
         </ScrollView>
       </LinearGradient>
 
-      {/* Title Container */}
+      {/* Tone Settings */}
       <View style={styles.titleContainer}>
-        <GradientText style={globalStyles.subtitle}>
-          Tone Settings{" "}
-        </GradientText>
+        <GradientText style={globalStyles.subtitle}>Tone Settings</GradientText>
       </View>
 
-      {/* Tone Buttons Grid */}
-      <FlatList
-        data={toneOptions}
-        renderItem={renderToneItem}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={3}
-        style={styles.toneButtonContainer}
-      />
+      <View style={styles.toneButtonContainer}>
+        <FlatList
+          data={toneOptions}
+          renderItem={renderToneItem}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={3}
+          style={styles.toneButtonContainer}
+        />
+      </View>
+
+      {/* Description */}
+      <View style={styles.titleContainer}>
+        <GradientText style={globalStyles.subtitle}>Description</GradientText>
+      </View>
+
+      <LinearGradient
+        style={styles.card2}
+        colors={["#0C0922", "#2F2770"]}
+        start={{ x: 1, y: 5 }}
+        end={{ x: 10, y: 5 }}
+      >
+        <ScrollView style={styles.scrollView}>
+          <Text style={globalStyles.emailBody}>{selectedTone.description}</Text>
+        </ScrollView>
+      </LinearGradient>
+
+      {/* Save Button */}
+      <View style={styles.saveBtnContainer}>
+        <GradientButton
+          title="Save"
+          colors={["#15CDB7", "#387E75"]}
+          onPress={() => {
+            /* Handle generate AI response action */
+          }}
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -90,9 +122,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0C0115",
-    paddingTop: 40,
   },
-
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -109,29 +139,51 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: "flex-start",
-    marginTop: 20,
+    marginTop: 10,
   },
   card: {
-    flex: 0.2,
     width: "90%",
-    alignSelf: "center", // Center the card
+    alignSelf: "center",
     borderRadius: 10,
     padding: 15,
     marginBottom: 5,
     marginTop: 10,
+    flex: 0.5,
+  },
+  card2: {
+    width: "90%",
+    alignSelf: "center",
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 5,
+    marginTop: 10,
+    flex: 1,
   },
   toneButtonContainer: {
-    marginTop: 20,
-    paddingHorizontal: 5, // Adjust padding as needed
+    marginTop: 10,
+    paddingHorizontal: 6,
   },
-  toneButton: {
+  gradientButton: {
     flex: 1,
     margin: 5,
-    backgroundColor: "#7CFFE7",
+    borderRadius: 15,
+  },
+  toneButton: {
+    backgroundColor: "transparent",
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
+  },
+  toneButtonText: {
+    color: "white",
+    textAlign: "center",
+  },
+  saveBtnContainer: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
   },
 });
 

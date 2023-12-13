@@ -18,7 +18,7 @@ const toneOptions = [
   },
   {
     id: 3,
-    title: "Business Casual",
+    title: "Casual",
     description:
       "A balanced mix of professional respect and a friendly tone for a business environment.",
     prompt:

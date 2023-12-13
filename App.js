@@ -1,7 +1,7 @@
+// App.js
 import React from "react";
-import AuthenticationScreen from "./src/screens/AuthenticationScreen";
-import MultiTab from "./src/screens/MultiTab";
-import SettingsScreen from "./src/screens/SettingsScreen"; // Import your custom settings screen
+import { NavigationContainer } from "@react-navigation/native";
+import AppNavigator from "./src/navigation/AppNavigator";
 import useCustomFonts from "./hooks/useCustomFonts";
 
 export default function App() {
@@ -11,6 +11,11 @@ export default function App() {
     return null; // Or some loading component
   }
 
-  // Replace <Settings /> with <SettingsScreen /> or any other screen you want to display
-  return <SettingsScreen />;
+  return (
+    <>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </>
+  );
 }

@@ -1,5 +1,6 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
+//firebaseConfig.js
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC8PnhBUJGgjZyAGrs3ndzkdKgwBM1w4f0",
@@ -17,12 +18,14 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore();
 
-async function fetchData() {
-  const snapshot = await db.collection("your-collection-name").get();
-  const data = snapshot.docs.map((doc) => doc.data());
-  console.log(data);
-}
-
-fetchData();
+export const fetchData = async (collectionName) => {
+  try {
+    const snapshot = await db.collection(collectionName).get();
+    return snapshot.docs.map((doc) => doc.data());
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+    return []; // Return an empty array in case of error
+  }
+};
 
 export default db;

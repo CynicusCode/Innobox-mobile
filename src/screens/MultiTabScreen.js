@@ -30,7 +30,7 @@ const renderTabBar = (props) => (
   />
 );
 
-const MultiTab = () => {
+const MultiTabScreen = () => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "email", title: "E-mail" },
@@ -40,16 +40,6 @@ const MultiTab = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header containing Hamburger Menu Icon and Title */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.menuButton}>
-          <Icon name="menu" type="material" color="#7CFFE7" />
-        </TouchableOpacity>
-        <Text style={[globalStyles.header, styles.title]}>
-          Ai-Response-Deck
-        </Text>
-      </View>
-
       {/* Tab View */}
       <TabView
         navigationState={{ index, routes }}
@@ -67,19 +57,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0C0115",
-    paddingTop: 40,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-  },
-  menuButton: {
-    marginLeft: 10,
-  },
-  title: {
-    textAlign: "center",
-    flexGrow: 1,
   },
   tabView: {
     flex: 1,
@@ -90,4 +72,4 @@ const styles = StyleSheet.create({
   // You can add more styles here as needed
 });
 
-export default MultiTab;
+export default MultiTabScreen;
