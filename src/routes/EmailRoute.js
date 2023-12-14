@@ -1,42 +1,58 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+//scr// routes // EmailRoute.js
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import GradientButton from "../components/GradientButton";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "../data/firebaseConfig";
+import loadingGif from "../../assets/images/loadingGif.gif";
+import {
+  setEmails,
+  setCurrentEmailIndex,
+  setLoading,
+} from "../store/actions/emailActions";
 import previousIcon from "../../assets/images/previous.png";
 import nextIcon from "../../assets/images/Next.png";
-import emailIcon from "../../assets/images/email.png";
-import { fetchData } from "../data/firebaseConfig";
 
 const EmailRoute = () => {
-  const [emails, setEmails] = useState([]);
-  const [currentEmailIndex, setCurrentEmailIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const emails = useSelector((state) => state.email.emails);
+  const currentEmailIndex = useSelector(
+    (state) => state.email.currentEmailIndex
+  );
+  const isLoading = useSelector((state) => state.email.isLoading);
 
   useEffect(() => {
     const getEmailData = async () => {
       const fetchedEmails = await fetchData("emails");
       if (fetchedEmails && fetchedEmails.length > 0) {
-        setEmails(fetchedEmails);
-        setIsLoading(false);
+        dispatch(setEmails(fetchedEmails));
+        dispatch(setLoading(false));
       }
     };
-
     getEmailData();
-  }, []);
+  }, [dispatch]);
 
   const handleNext = () => {
     if (currentEmailIndex < emails.length - 1) {
-      setCurrentEmailIndex(currentEmailIndex + 1);
+      dispatch(setCurrentEmailIndex(currentEmailIndex + 1));
     }
   };
 
   const handlePrevious = () => {
     if (currentEmailIndex > 0) {
-      setCurrentEmailIndex(currentEmailIndex - 1);
+      dispatch(setCurrentEmailIndex(currentEmailIndex - 1));
     }
   };
 
-  const currentEmail = emails[currentEmailIndex];
+  const navigateToContext = () => {
+    const currentEmail = emails[currentEmailIndex];
+    if (currentEmail) {
+      navigation.navigate("ContextRoute", { ticketId: currentEmail.ticketId });
+    }
+  };
+
+  const currentEmail = emails.length > 0 ? emails[currentEmailIndex] : null;
 
   return (
     <View style={styles.container}>
@@ -48,7 +64,9 @@ const EmailRoute = () => {
       >
         <ScrollView style={styles.scrollView}>
           {isLoading ? (
-            <Text style={styles.text}>Loading...</Text>
+            <View style={styles.centeredContent}>
+              <Image source={loadingGif} style={styles.loadingImage} />
+            </View>
           ) : currentEmail ? (
             <View>
               <Text style={styles.emailSubject}>{currentEmail.subject}</Text>
@@ -126,6 +144,15 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 6,
     marginBottom: 15,
+  },
+  centeredContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingImage: {
+    width: 100,
+    height: 100,
   },
 });
 

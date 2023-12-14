@@ -1,103 +1,136 @@
+//ContextRoute.js
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  TextInput,
-  Image,
-} from "react-native";
-import { Icon } from "react-native-elements";
+import { View, TextInput, Text, StyleSheet, ScrollView } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import GradientButton from "../components/GradientButton";
 import { globalStyles } from "../../styles/globalStyles";
+import { extractTicketId } from "../utils/ticketExtractor";
+import { fetchData } from "../data/firebaseConfig";
+import AiIcon from "../../assets/images/eos-icons_ai.png";
+import editIcon from "../../assets/images/edit.png";
+import contextIcon from "../../assets/images/context.png";
 
-const SettingsScreen = () => {
-  const [description, setDescription] = useState("");
+const ContextRoute = () => {
+  const [text, setText] = useState("");
+  const [ticketInfo, setTicketInfo] = useState(null);
+
+  const handleGetContext = async () => {
+    console.log("Getting context for:", text); //todo: remove this line
+    const ticketId = extractTicketId(text);
+    console.log("Extracted ticket ID:", ticketId); //todo: remove this line
+
+    if (ticketId) {
+      const tickets = await fetchData("tickets");
+      const foundTicket = tickets.find((ticket) => ticket.ID === ticketId);
+      console.log("Found ticket:", foundTicket); //todo: remove this line
+      setTicketInfo(foundTicket);
+    } else {
+      console.log("No ticket ID found");
+      setTicketInfo(null);
+    }
+  };
+
+  // Add functions for handling Edit and AI Response here
+  const handleEdit = () => {
+    // Handle edit action
+  };
+
+  const handleGenerateAIResponse = () => {
+    // Handle AI response generation
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header containing Hamburger Menu Icon and Title */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.menuButton}>
-          <Icon name="menu" type="material" color="#7CFFE7" />
-        </TouchableOpacity>
-        <Text style={[globalStyles.header, styles.title]}>Settings</Text>
-      </View>
+    <View style={styles.container}>
+      <LinearGradient
+        style={styles.card}
+        colors={["#0C0922", "#2F2770"]}
+        start={{ x: 1, y: 5 }}
+        end={{ x: 10, y: 5 }}
+      >
+        <ScrollView style={styles.scrollView}>
+          <TextInput
+            style={styles.input}
+            multiline
+            value={text}
+            onChangeText={setText}
+            placeholder="Enter your text here..."
+            placeholderTextColor="#888"
+          />
+        </ScrollView>
+      </LinearGradient>
 
-      {/* Gradient Title */}
-      <View style={styles.titleContainer}>
-        <Text style={globalStyles.subTitle}>Describe Yourself</Text>
-      </View>
-
-      {/* Description Input */}
-      <View style={styles.card}>
-        <TextInput
-          style={styles.input}
-          multiline
-          value={description}
-          onChangeText={setDescription}
-          placeholder="Enter a brief description..."
+      <View style={styles.buttonContainer}>
+        <GradientButton
+          title="Context"
+          onPress={handleGetContext}
+          iconSource={contextIcon}
+        />
+        <GradientButton
+          title="Edit"
+          onPress={handleEdit}
+          iconSource={editIcon}
+        />
+        <GradientButton
+          title="Ai Answer"
+          onPress={handleGenerateAIResponse}
+          iconSource={AiIcon}
         />
       </View>
 
-      {/* Subtitle for Personality Modifiers */}
-      <View style={styles.subtitleContainer}>
-        <Text style={globalStyles.subTitle}>Personality Modifiers</Text>
-      </View>
-
-      {/* Card for Personality Modifiers */}
-      <View style={styles.card}>
-        {/* Add components for personality modifiers here */}
-      </View>
-    </SafeAreaView>
+      {ticketInfo && (
+        <View style={styles.ticketInfoContainer}>
+          <Text style={styles.ticketInfoText}>ID: {ticketInfo.ID}</Text>
+          <Text style={styles.ticketInfoText}>
+            Entered By: {ticketInfo.EnteredBy}
+          </Text>
+          <Text style={styles.ticketInfoText}>
+            Description: {ticketInfo.Description}
+          </Text>
+          <Text style={styles.ticketInfoText}>Status: {ticketInfo.Status}</Text>
+        </View>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#0C0115",
-    paddingTop: 40,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  menuButton: {
-    marginLeft: 10,
-  },
-  title: {
-    textAlign: "center",
-    flexGrow: 1,
-  },
-  titleContainer: {
-    alignItems: "center",
-    marginTop: 20,
   },
   card: {
-    flex: 0.4,
+    flex: 1,
     width: "90%",
-    alignSelf: "center",
     borderRadius: 10,
     padding: 15,
     marginTop: 30,
     marginBottom: 5,
-    backgroundColor: "#fff", // Add a background color to the card
+  },
+  scrollView: {
+    flex: 1,
   },
   input: {
-    height: 100, // Adjust as needed
-    borderWidth: 1,
-    borderColor: "#ddd",
+    // Style your text input here
+    color: "white",
+    fontSize: 16,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
     padding: 10,
-    borderRadius: 5,
-    backgroundColor: "#fff",
   },
-  subtitleContainer: {
-    alignItems: "center",
-    marginTop: 20,
+  ticketInfoContainer: {
+    padding: 10,
+    alignItems: "flex-start",
   },
-  // Add more styles as needed
+  ticketInfoText: {
+    color: "white",
+    fontSize: 16,
+    marginVertical: 2,
+  },
 });
 
-export default SettingsScreen;
+export default ContextRoute;

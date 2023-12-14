@@ -1,3 +1,4 @@
+//scr// screens // SettingsScreen.js
 import React, { useState } from "react";
 import {
   View,
@@ -9,27 +10,52 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import { Icon } from "react-native-elements";
-import { globalStyles } from "../../styles/globalStyles";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setPersonalityDescription,
+  setSelectedTone,
+} from "../store/actions/settingsActions";
 import toneOptions from "../data/toneOptions";
 import GradientText from "../components/GradientText";
 import { LinearGradient } from "expo-linear-gradient";
 import GradientButton from "../components/GradientButton";
+import { generateResponse } from "../utils/openAiApi"; // Ensure this utility is implemented
 
 const SettingsScreen = () => {
-  const defaultTone = toneOptions.find((tone) => tone.title === "Professional");
-  const [selectedTone, setSelectedTone] = useState(defaultTone);
-  const [text, setText] = useState("");
+  const dispatch = useDispatch();
+  const personalityDescription = useSelector(
+    (state) => state.settings.personalityDescription
+  );
+  const [text, setText] = useState(personalityDescription);
+
+  const selectedTone = useSelector((state) => state.settings.selectedTone);
+  const [localSelectedTone, setLocalSelectedTone] = useState(
+    selectedTone || toneOptions[0]
+  );
+
+  const currentEmail = useSelector((state) => state.email.currentEmail); // Update according to your Redux store
+  const contextInfo = useSelector((state) => state.context.contextInfo); // Update according to your Redux store
 
   const handleSelectTone = (tone) => {
-    setSelectedTone(tone);
+    setLocalSelectedTone(tone);
+  };
+
+  const handleSave = async () => {
+    dispatch(setPersonalityDescription(text));
+    dispatch(setSelectedTone(localSelectedTone));
+
+    const prompt = `Email: ${currentEmail}\nContext: ${contextInfo}\nPersonality: ${text}\nTone: ${localSelectedTone.title}\nResponse:`;
+
+    try {
+      const aiResponse = await generateResponse(prompt);
+      console.log("AI Response:", aiResponse);
+    } catch (error) {
+      console.error("Error generating AI response:", error);
+    }
   };
 
   const renderToneItem = ({ item }) => {
-    // Determine if this tone is selected
-    const isSelected = selectedTone.id === item.id;
-
-    // Set gradient colors based on selection
+    const isSelected = localSelectedTone.id === item.id;
     const gradientColors = isSelected
       ? ["#4CAF50", "#81C784"]
       : ["#1F83AD", "#38089F"];
@@ -48,7 +74,6 @@ const SettingsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Title Container */}
       <View style={styles.titleContainer}>
         <GradientText style={globalStyles.subtitle}>
           Personality Settings
@@ -61,19 +86,21 @@ const SettingsScreen = () => {
         start={{ x: 1, y: 5 }}
         end={{ x: 10, y: 5 }}
       >
-        <ScrollView style={styles.scrollView}>
+        <ScrollView
+          style={styles.scrollView}
+          keyboardShouldPersistTaps="handled"
+        >
           <TextInput
             style={globalStyles.emailBody}
             multiline
             value={text}
             onChangeText={setText}
-            placeholder="Please describe yourself, how would you like your e-mails in a general way to sound like"
+            placeholder="Please describe yourself..."
             placeholderTextColor="white"
           />
         </ScrollView>
       </LinearGradient>
 
-      {/* Tone Settings */}
       <View style={styles.titleContainer}>
         <GradientText style={globalStyles.subtitle}>Tone Settings</GradientText>
       </View>
@@ -84,11 +111,9 @@ const SettingsScreen = () => {
           renderItem={renderToneItem}
           keyExtractor={(item) => item.id.toString()}
           numColumns={3}
-          style={styles.toneButtonContainer}
         />
       </View>
 
-      {/* Description */}
       <View style={styles.titleContainer}>
         <GradientText style={globalStyles.subtitle}>Description</GradientText>
       </View>
@@ -100,18 +125,17 @@ const SettingsScreen = () => {
         end={{ x: 10, y: 5 }}
       >
         <ScrollView style={styles.scrollView}>
-          <Text style={globalStyles.emailBody}>{selectedTone.description}</Text>
+          <Text style={globalStyles.emailBody}>
+            {localSelectedTone.description}
+          </Text>
         </ScrollView>
       </LinearGradient>
 
-      {/* Save Button */}
       <View style={styles.saveBtnContainer}>
         <GradientButton
           title="Save"
           colors={["#15CDB7", "#387E75"]}
-          onPress={() => {
-            /* Handle generate AI response action */
-          }}
+          onPress={handleSave}
         />
       </View>
     </SafeAreaView>
