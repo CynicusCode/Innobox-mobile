@@ -1,4 +1,5 @@
 // src// routes// ContextRoute.js
+// src// routes// ContextRoute.js
 import React, { useState, useEffect } from "react";
 import { View, TextInput, Text, ScrollView, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -8,6 +9,7 @@ import { fetchData } from "../data/firebaseConfig";
 import AiIcon from "../../assets/images/eos-icons_ai.png";
 import editIcon from "../../assets/images/edit.png";
 import contextIcon from "../../assets/images/context.png";
+import { generateOpenAiResponse } from "../components/OpenAiPromptHandler";
 
 const ContextRoute = () => {
   const currentEmailIndex = useSelector(
@@ -15,10 +17,16 @@ const ContextRoute = () => {
   );
   const emails = useSelector((state) => state.email.emails);
   const currentEmail = emails[currentEmailIndex];
+  const personalityDescription = useSelector(
+    (state) => state.settings.personalityDescription
+  );
+  const selectedTone =
+    useSelector((state) => state.settings.selectedTone)?.title || "Neutral";
+  const emailContent = currentEmail?.content || ""; // Adjust as needed to get the correct email content
 
   const [ticketInfo, setTicketInfo] = useState(null);
   const [editable, setEditable] = useState(false);
-  const [editedContent, setEditedContent] = useState(""); // New state for edited content
+  const [editedContent, setEditedContent] = useState("");
 
   useEffect(() => {
     const loadTicketInfo = async () => {
@@ -38,15 +46,24 @@ const ContextRoute = () => {
 
   const handleEditToggle = () => {
     setEditable(!editable);
-    // Optionally reset the editedContent when cancelling or saving the edit
     if (editable) {
-      // Reset or save logic here
-      // For example: setEditedContent('');
+      // Reset or save logic here, if necessary
     }
   };
 
   const handleTextInputChange = (text) => {
     setEditedContent(text);
+  };
+
+  const handleGenerateAiResponse = async () => {
+    const aiResponse = await generateOpenAiResponse(
+      emailContent,
+      editedContent,
+      personalityDescription,
+      selectedTone
+    );
+    // Process the AI response as needed
+    console.log("AI Response:", aiResponse);
   };
 
   return (
@@ -59,7 +76,6 @@ const ContextRoute = () => {
       >
         <ScrollView style={styles.scrollView}>
           {!editable && ticketInfo ? (
-            // View mode displaying ticket details
             <>
               <Text style={styles.ticketDetailText}>ID: {ticketInfo.ID}</Text>
               <Text style={styles.ticketDetailText}>
@@ -73,11 +89,10 @@ const ContextRoute = () => {
               </Text>
             </>
           ) : (
-            // Edit mode with a single editable field for context
             <TextInput
               style={styles.input}
               multiline
-              value={editedContent} // Use the editedContent state
+              value={editedContent}
               onChangeText={handleTextInputChange}
               placeholder="Enter your context here..."
               placeholderTextColor="#888"
@@ -94,7 +109,7 @@ const ContextRoute = () => {
         />
         <GradientButton
           title="Ai Answer"
-          onPress={() => {}}
+          onPress={handleGenerateAiResponse}
           iconSource={AiIcon}
         />
       </View>

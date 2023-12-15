@@ -19,39 +19,27 @@ import toneOptions from "../data/toneOptions";
 import GradientText from "../components/GradientText";
 import { LinearGradient } from "expo-linear-gradient";
 import GradientButton from "../components/GradientButton";
-import { generateResponse } from "../utils/openAiApi"; // Ensure this utility is implemented
+import { globalStyles } from "../../styles/globalStyles";
 
 const SettingsScreen = () => {
   const dispatch = useDispatch();
   const personalityDescription = useSelector(
     (state) => state.settings.personalityDescription
   );
-  const [text, setText] = useState(personalityDescription);
-
   const selectedTone = useSelector((state) => state.settings.selectedTone);
+
+  const [text, setText] = useState(personalityDescription);
   const [localSelectedTone, setLocalSelectedTone] = useState(
     selectedTone || toneOptions[0]
   );
-
-  const currentEmail = useSelector((state) => state.email.currentEmail); // Update according to your Redux store
-  const contextInfo = useSelector((state) => state.context.contextInfo); // Update according to your Redux store
 
   const handleSelectTone = (tone) => {
     setLocalSelectedTone(tone);
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     dispatch(setPersonalityDescription(text));
     dispatch(setSelectedTone(localSelectedTone));
-
-    const prompt = `Email: ${currentEmail}\nContext: ${contextInfo}\nPersonality: ${text}\nTone: ${localSelectedTone.title}\nResponse:`;
-
-    try {
-      const aiResponse = await generateResponse(prompt);
-      console.log("AI Response:", aiResponse);
-    } catch (error) {
-      console.error("Error generating AI response:", error);
-    }
   };
 
   const renderToneItem = ({ item }) => {
