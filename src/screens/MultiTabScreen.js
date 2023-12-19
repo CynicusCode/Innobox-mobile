@@ -1,3 +1,4 @@
+//src// MultiTabScreen.js
 import React, { useState } from "react";
 import {
   View,
@@ -13,6 +14,8 @@ import { Icon } from "react-native-elements";
 import EmailRoute from "../routes/EmailRoute";
 import ContextRoute from "../routes/ContextRoute";
 import ResponseRoute from "../routes/ResponseRoute";
+import { useSelector, useDispatch } from "react-redux";
+import { setCurrentTabIndex } from "../store/actions/tabActions";
 
 const renderScene = SceneMap({
   email: EmailRoute,
@@ -31,7 +34,9 @@ const renderTabBar = (props) => (
 );
 
 const MultiTabScreen = () => {
-  const [index, setIndex] = useState(0);
+  const dispatch = useDispatch();
+  const currentTabIndex = useSelector((state) => state.tab.currentTabIndex);
+
   const [routes] = useState([
     { key: "email", title: "E-mail" },
     { key: "context", title: "Context" },
@@ -40,11 +45,10 @@ const MultiTabScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Tab View */}
       <TabView
-        navigationState={{ index, routes }}
+        navigationState={{ index: currentTabIndex, routes }}
         renderScene={renderScene}
-        onIndexChange={setIndex}
+        onIndexChange={(index) => dispatch(setCurrentTabIndex(index))}
         initialLayout={{ width: "100%" }}
         style={styles.tabView}
         renderTabBar={renderTabBar}

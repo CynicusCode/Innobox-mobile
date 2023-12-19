@@ -13,7 +13,7 @@ export const generateResponse = async (email, context, personality, tone) => {
           {
             role: "system",
             content:
-              "You are an email assistant. Your task is to draft a response to a client's email, using internal knowledge about a situation without explicitly stating that knowledge to the user. The response should be proactive and should reflect the given personality and tone.",
+              "You are an email assistant. Your task is to draft a response to a client's email. The response should be proactive based on the interal context and should reflect the given personality and tone.",
           },
           {
             role: "user",
@@ -21,14 +21,14 @@ export const generateResponse = async (email, context, personality, tone) => {
           },
           {
             role: "user",
-            content: `As an assistant, you know that ${context}. Now, draft a response with the personality: ${personality}, and tone: ${tone}.`,
+            content: `Internal context: ${context}. Now, draft a response with the personality: ${personality}, and tone: ${tone}.`,
           },
         ],
       },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
+          Authorization: `Bearer ${OPENAI_API_KEY} `,
         },
       }
     );

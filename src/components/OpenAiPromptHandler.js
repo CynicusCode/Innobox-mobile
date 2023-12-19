@@ -2,15 +2,15 @@
 import { generateResponse } from "../utils/openAiApi";
 
 export const generateOpenAiResponse = async (
-  email,
+  emailContent,
   context,
   personality,
-  tone
+  toneDescription // Use a parameter like 'toneDescription'
 ) => {
   const prompt = `Using the provided context, respond to the client's email. Emulate the specified personality and tone.
   
   Client's Email:
-  "${email}"
+  "${emailContent}" // Use 'emailContent' here
   
   Context for Response:
   ${context}
@@ -19,19 +19,16 @@ export const generateOpenAiResponse = async (
   ${personality}
   
   Tone:
-  ${tone}
+  ${toneDescription} // Use 'toneDescription' here
   
   Response:`;
 
   try {
     const response = await generateResponse(prompt);
-    console.log(response); // Initially log the response
-    return response; // You can return it if needed
+    console.log("Response from OpenAI:", response);
+    return response;
   } catch (error) {
-    console.error(
-      "Error calling OpenAI API:",
-      error.response ? error.response.data : error
-    );
+    console.error("Error calling OpenAI API:", error);
     return null;
   }
 };

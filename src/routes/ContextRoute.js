@@ -1,5 +1,4 @@
 // src// routes// ContextRoute.js
-// src// routes// ContextRoute.js
 import React, { useState, useEffect } from "react";
 import { View, TextInput, Text, ScrollView, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -10,6 +9,9 @@ import AiIcon from "../../assets/images/eos-icons_ai.png";
 import editIcon from "../../assets/images/edit.png";
 import contextIcon from "../../assets/images/context.png";
 import { generateOpenAiResponse } from "../components/OpenAiPromptHandler";
+import { useDispatch } from "react-redux";
+import { setAiResponse } from "../store/actions/aiResponseActions";
+import { setCurrentTabIndex } from "../store/actions/tabActions";
 
 const ContextRoute = () => {
   const currentEmailIndex = useSelector(
@@ -27,6 +29,7 @@ const ContextRoute = () => {
   const [ticketInfo, setTicketInfo] = useState(null);
   const [editable, setEditable] = useState(false);
   const [editedContent, setEditedContent] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadTicketInfo = async () => {
@@ -47,7 +50,6 @@ const ContextRoute = () => {
   const handleEditToggle = () => {
     setEditable(!editable);
     if (editable) {
-      // Reset or save logic here, if necessary
     }
   };
 
@@ -55,15 +57,28 @@ const ContextRoute = () => {
     setEditedContent(text);
   };
 
+  const selectedToneDescription = useSelector(
+    (state) => state.settings.selectedTone?.description || "Neutral tone"
+  );
+
   const handleGenerateAiResponse = async () => {
-    const aiResponse = await generateOpenAiResponse(
-      emailContent,
-      editedContent,
-      personalityDescription,
-      selectedTone
-    );
-    // Process the AI response as needed
-    console.log("AI Response:", aiResponse);
+    dispatch(setCurrentTabIndex(2)); // Move to Response tab immediately
+    const emailBody = currentEmail?.body || "";
+    const context = editedContent;
+    const personality = personalityDescription;
+    const tone = selectedToneDescription;
+
+    try {
+      const aiResponse = await generateOpenAiResponse(
+        emailBody,
+        context,
+        personality,
+        tone
+      );
+      dispatch(setAiResponse(aiResponse)); // Dispatch AI response after it's received
+    } catch (error) {
+      console.error("Error generating AI response: ", error);
+    }
   };
 
   return (

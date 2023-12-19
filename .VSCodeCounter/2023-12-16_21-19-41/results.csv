@@ -1,0 +1,37 @@
+"filename", "language", "JSON", "JavaScript", "Markdown", "comment", "blank", "total"
+"d:\Developer\Projects\React Native\innobox-mobile\App.js", "JavaScript", 0, 19, 0, 0, 4, 23
+"d:\Developer\Projects\React Native\innobox-mobile\README.md", "Markdown", 0, 0, 2, 0, 1, 3
+"d:\Developer\Projects\React Native\innobox-mobile\app.json", "JSON", 30, 0, 0, 0, 1, 31
+"d:\Developer\Projects\React Native\innobox-mobile\babel.config.js", "JavaScript", 0, 10, 0, 0, 1, 11
+"d:\Developer\Projects\React Native\innobox-mobile\hooks\useCustomFonts.js", "JavaScript", 0, 17, 0, 2, 5, 24
+"d:\Developer\Projects\React Native\innobox-mobile\package-lock.json", "JSON", 15135, 0, 0, 0, 1, 15136
+"d:\Developer\Projects\React Native\innobox-mobile\package.json", "JSON", 46, 0, 0, 0, 1, 47
+"d:\Developer\Projects\React Native\innobox-mobile\src\components\CustomDrawerHeader.js", "JavaScript", 0, 28, 0, 1, 4, 33
+"d:\Developer\Projects\React Native\innobox-mobile\src\components\GradientButton.js", "JavaScript", 0, 55, 0, 2, 7, 64
+"d:\Developer\Projects\React Native\innobox-mobile\src\components\GradientText.js", "JavaScript", 0, 28, 0, 2, 4, 34
+"d:\Developer\Projects\React Native\innobox-mobile\src\components\OpenAiPromptHandler.js", "JavaScript", 0, 26, 0, 1, 8, 35
+"d:\Developer\Projects\React Native\innobox-mobile\src\data\firebaseConfig.js", "JavaScript", 0, 34, 0, 1, 6, 41
+"d:\Developer\Projects\React Native\innobox-mobile\src\data\toneOptions.js", "JavaScript", 0, 108, 0, 0, 1, 109
+"d:\Developer\Projects\React Native\innobox-mobile\src\navigation\AppNavigator.js", "JavaScript", 0, 130, 0, 2, 10, 142
+"d:\Developer\Projects\React Native\innobox-mobile\src\routes\ContextRoute.js", "JavaScript", 0, 160, 0, 2, 14, 176
+"d:\Developer\Projects\React Native\innobox-mobile\src\routes\EmailRoute.js", "JavaScript", 0, 148, 0, 1, 11, 160
+"d:\Developer\Projects\React Native\innobox-mobile\src\routes\ResponseRoute.js", "JavaScript", 0, 103, 0, 3, 8, 114
+"d:\Developer\Projects\React Native\innobox-mobile\src\screens\AuthenticationScreen.js", "JavaScript", 0, 205, 0, 2, 14, 221
+"d:\Developer\Projects\React Native\innobox-mobile\src\screens\MultiTabScreen.js", "JavaScript", 0, 69, 0, 3, 8, 80
+"d:\Developer\Projects\React Native\innobox-mobile\src\screens\SettingsScreen.js", "JavaScript", 0, 186, 0, 1, 16, 203
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\actionTypes.js", "JavaScript", 0, 3, 0, 1, 1, 5
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\actions\aiResponseActions.js", "JavaScript", 0, 5, 0, 1, 2, 8
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\actions\emailActions.js", "JavaScript", 0, 17, 0, 1, 4, 22
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\actions\settingsActions.js", "JavaScript", 0, 8, 0, 1, 2, 11
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\actions\tabActions.js", "JavaScript", 0, 5, 0, 1, 2, 8
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\index.js", "JavaScript", 0, 8, 0, 1, 3, 12
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\reducers\aiResponseReducer.js", "JavaScript", 0, 13, 0, 1, 4, 18
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\reducers\emailReducer.js", "JavaScript", 0, 23, 0, 1, 4, 28
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\reducers\index.js", "JavaScript", 0, 12, 0, 1, 3, 16
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\reducers\settingsReducer.js", "JavaScript", 0, 15, 0, 1, 3, 19
+"d:\Developer\Projects\React Native\innobox-mobile\src\store\reducers\tabReducer.js", "JavaScript", 0, 13, 0, 1, 4, 18
+"d:\Developer\Projects\React Native\innobox-mobile\src\utils\openAiApi.js", "JavaScript", 0, 42, 0, 1, 3, 46
+"d:\Developer\Projects\React Native\innobox-mobile\src\utils\ticketExtractor.js", "JavaScript", 0, 5, 0, 1, 1, 7
+"d:\Developer\Projects\React Native\innobox-mobile\styles\globalStyles.js", "JavaScript", 0, 47, 0, 2, 2, 51
+"d:\Developer\Projects\React Native\innobox-mobile\testApp.js", "JavaScript", 0, 121, 0, 5, 11, 137
+"Total", "-", 15211, 1663, 2, 43, 174, 17093
